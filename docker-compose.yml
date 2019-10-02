@@ -1,0 +1,43 @@
+---
+version: '3.4'
+services:
+
+  db:
+    image: "postgres:11"
+    container_name: "postgres"
+    ports:
+      - "54320:5432"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+
+  orion-a:
+    image: pegasyseng/orion:${ORION_VERSION}
+    depends_on:
+      - db
+    volumes:
+      - ./config/orion:/opt/orion/conf/
+    command: /opt/orion/bin/orion /opt/orion/conf/orion.conf
+    ports:
+      - 8881:8888
+
+  orion-b:
+    image: pegasyseng/orion:${ORION_VERSION}
+    depends_on:
+      - db
+    volumes:
+      - ./config/orion:/opt/orion/conf/
+    command: /opt/orion/bin/orion /opt/orion/conf/orion.conf
+    ports:
+      - 8882:8888
+
+  lb:
+    image: haproxy
+    depends_on:
+      - orion-a
+      - orion-b
+    volumes:
+      - ./config/haproxy:/usr/local/etc/haproxy
+    ports:
+      - 9000:9000
+      - 8080:8080
+      - 8888:8888
