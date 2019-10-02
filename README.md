@@ -4,8 +4,6 @@ This project is an example of a highly availble deployment of Orion. We have two
 
 This example **does NOT provide database replication out of the box**. This means that your database will be a single point of failure for high availability. When using this in production, make use database replication to avoid downtime due to database availability.
 
-TODO: diagram
-
 ## First time configuration
 
 ### Configuring Orion

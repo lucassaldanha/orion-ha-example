@@ -10,6 +10,18 @@ services:
     volumes:
       - ./data/db:/var/lib/postgresql/data
 
+  # db-slave:
+  #   image: "nebirhos/postgres-replication"
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     - POSTGRES_MASTER_SERVICE_HOST=db
+  #     - REPLICATION_ROLE=slave
+  #   ports:
+  #     - "54321:5432"
+  #   volumes:
+  #     - ./data/db-slave:/var/lib/postgresql/data
+
   orion-a:
     image: pegasyseng/orion:${ORION_VERSION}
     depends_on:
